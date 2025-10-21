@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+## Routing (Page Router)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Anything created inside the `app` directory is treated as a route when using the Expo Router (file-based routing).
 
-## Get started
+For example:
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+app/about.jsx
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+The file `about.jsx` becomes a route (a navigation screen) in your app.
 
-## Learn more
+Quick steps
 
-To learn more about developing your project with Expo, look at the following resources:
+1. Create a page file inside `app` (for example `about.jsx`).
+2. Export a component from that file — it will become a route.
+3. Use `Link` from `expo-router` to navigate between routes.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Examples
 
-## Join the community
+- Create a new route file (POSIX):
 
-Join our community of developers creating universal apps.
+```bash
+cd app
+touch about.jsx
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Create a new route file (PowerShell):
+
+```powershell
+cd app
+New-Item about.jsx -ItemType File
+```
+
+- Minimal `about.jsx` component:
+
+```jsx
+import React from 'react';
+import { View, Text } from 'react-native';
+
+export default function About() {
+   return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+         <Text>About page</Text>
+      </View>
+   );
+}
+```
+
+- Add a `Link` to `index.jsx` to navigate to the About page:
+
+```jsx
+import { Link } from 'expo-router';
+
+export default function Index() {
+   return <Link href={'/about'}>About</Link>;
+}
+```
+
+Notes
+
+- Make sure to import `Link` from `expo-router`.
+- When you click the `About` link, the router will navigate to the `about` page automatically.
