@@ -1,0 +1,32 @@
+React Native Uses Page Router
+
+Anything created inside app is treated as route 
+
+For example :
+
+app/about.jsx
+
+about.jsx is a route or navigation in react Native
+
+
+The below command can be used for a expo routing 
+`bash
+cd app
+touch about.jsx 
+`
+
+inside about.jsx create a react native export function 
+`bash
+rnfes
+`
+
+inside  index.jsx create add a Link tab :
+`bash
+<Link href={'/about'}>
+About
+</Link>
+`
+
+also import the Link tag from expo-Router
+
+and when you click on About you will be redirected to the about page boom
