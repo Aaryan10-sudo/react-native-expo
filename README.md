@@ -162,3 +162,120 @@ Notes
 
 - Grouping route folders with parentheses (like `(tabs)`) is a recommended convention to avoid the folder name appearing in the URL.
 - The Expo Router automatically maps files to routes; use nested folders and `_layout.tsx` files to compose complex navigation.
+
+## Drawer (Side Drawer) routing
+
+Expo Router also supports drawer (side menu) navigation via the `Drawer` component. Drawers are commonly used for app-wide navigation that doesn’t fit in bottom tabs.
+
+Recommended file structure for a drawer layout:
+
+```
+app/
+   (drawer)/
+      _layout.tsx     <-- Drawer navigator
+      home.tsx        <-- Drawer screen
+      settings.tsx    <-- Drawer screen
+   (tabs)/           <-- optional nested tabs inside a drawer
+      _layout.tsx
+      index.tsx
+   index.tsx
+```
+
+Example `app/(drawer)/_layout.tsx`:
+
+```tsx
+import React from 'react';
+import { Drawer } from 'expo-router';
+
+export default function DrawerLayout() {
+   return (
+      <Drawer>
+         {/* Files inside this folder become drawer screens */}
+      </Drawer>
+   );
+}
+```
+
+Example drawer screens:
+
+`app/(drawer)/home.tsx`
+
+```tsx
+import React from 'react';
+import { View, Text } from 'react-native';
+
+export default function HomeScreen() {
+   return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+         <Text>Home (Drawer)</Text>
+      </View>
+   );
+}
+```
+
+`app/(drawer)/settings.tsx`
+
+```tsx
+import React from 'react';
+import { View, Text } from 'react-native';
+
+export default function SettingsScreen() {
+   return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+         <Text>Settings (Drawer)</Text>
+      </View>
+   );
+}
+```
+
+Customizing the drawer
+
+- Hide headers globally with `screenOptions={{ headerShown: false }}` on `<Drawer />`.
+- Provide icons via `Drawer.Screen` `options` with a `drawerIcon` (or `tabBarIcon` depending on platform). Example using `@expo/vector-icons`:
+
+```tsx
+import React from 'react';
+import { Drawer } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
+
+export default function DrawerLayout() {
+   return (
+      <Drawer screenOptions={{ headerShown: false }}>
+         <Drawer.Screen
+            name="home"
+            options={{
+               title: 'Home',
+               drawerIcon: ({ color, size }) => <MaterialIcons name="home" color={color} size={size} />,
+            }}
+         />
+         <Drawer.Screen
+            name="settings"
+            options={{
+               title: 'Settings',
+               drawerIcon: ({ color, size }) => <MaterialIcons name="settings" color={color} size={size} />,
+            }}
+         />
+      </Drawer>
+   );
+}
+```
+
+Notes
+
+- Parentheses groupings like `(drawer)` keep the folder name out of the route path.
+- You can nest any navigator inside a drawer (for example, place a `(tabs)` folder inside a drawer screen to have tabbed content while the drawer remains the global navigator).
+- If you need a custom drawer UI, you can provide a custom drawer content component via `drawerContent` in `screenOptions` or using a custom layout component.
+- The drawer works across platforms, but behavior and gestures can differ between web, iOS, and Android — test on each target platform.
+
+Example: nesting tabs inside a drawer
+
+```
+app/
+   (drawer)/
+      _layout.tsx     <-- Drawer
+      tabs/           <-- a folder that itself uses a Tabs layout
+         _layout.tsx
+         index.tsx
+```
+
+The router composes these nested layouts automatically; open the drawer to reach the nested screens.
